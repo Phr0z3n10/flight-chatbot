@@ -3,8 +3,10 @@ import anthropic
 from dotenv import load_dotenv
 import streamlit as st 
 
+# pull in API key from .env into environment
 load_dotenv()
 
+# initialize Anthropic client using env key… keeps things clean + secure
 client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 system_prompt =   """ You are a flight information desk at San Antonio International Airport (SAT). You know about flights status in both terminals. See flight data below.
@@ -30,31 +32,34 @@ ARRIVALS
 - DL 2203 | Delta | Los Angeles (LAX) | Arrives 4:10 PM | Gate B1 | Baggage Claim Carousel 2 | On Time
 - WN 987 | Southwest | Phoenix (PHX) | Arrives 6:30 PM | Gate B4 | Baggage Claim Carousel 1 | On Time
 """
+# UI header… just styling the title + subtitle for the app
+st.markdown("""<h1 style='color: #1B4F8A;'>  A.I.R.  🛩️</h1>     <p style='color: #2E5FA3;'>Airport Information Relay — San Antonio International Airport (SAT) </p> """, unsafe_allow_html=True)
 
-st.markdown("""     <h1 style='color: #1B4F8A;'>  A.I.R.  🛩️</h1>     <p style='color: #2E5FA3;'>Airport Information Relay — San Antonio International Airport (SAT) </p> """, unsafe_allow_html=True)
-
-
+# initialize chat history if it doesn’t exist yet and keeps conversation persistent across interactions
 if "messages"  not in st.session_state:
 	st.session_state.messages = [ ]
 
+# replay previous messages so the chat UI shows history
 for q in st.session_state.messages:
 	with st.chat_message(q["role"]):
 		st.markdown(q["content"])
 
+# input box for user question
 user_question = st.chat_input("Ask me about Arrivals and Departures")
 if user_question: 
 	st.session_state.messages.append({"role": "user", "content": user_question})
 	with st.chat_message("user"):
 		st.markdown(user_question)
-
+	# call Claude with full conversation history and system instructions
 	response = client.messages.create(
   	    	model="claude-opus-4-5",
             	max_tokens=1024,
             	system=system_prompt,
             	messages = st.session_state.messages
         )
-
+	# show assistant response in UI
 	with st.chat_message("assistant"):
 		st.markdown(response.content[0].text)
 
+	# store assistant response so convo continues properly
 	st.session_state.messages.append({"role": "assistant", "content": response.content[0].text})
