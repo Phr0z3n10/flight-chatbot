@@ -24,9 +24,6 @@ ARRIVALS
 - WN 987 | Southwest | Phoenix (PHX) | Arrives 6:30 PM | Gate B4 | Baggage Claim Carousel 1 | On Time
 """
 
-st.title("A.I.R.")
-st.caption("Airport Information Relay — San Antonio International Airport (SAT)")
-
 st.markdown("""     <h1 style='color: #1B4F8A;'>  A.I.R.  🛩️</h1>     <p style='color: #2E5FA3;'>Airport Information Relay — San Antonio International Airport (SAT) </p> """, unsafe_allow_html=True)
 
 
