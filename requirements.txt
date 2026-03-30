@@ -1,3 +1,5 @@
 anthropic
 streamlit
 python-dotenv
+streamlit-js-eval
+geopy
