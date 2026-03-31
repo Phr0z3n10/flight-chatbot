@@ -21,7 +21,7 @@ HEADERS = {
     "X-RapidAPI-Key": get_secret("AERODATABOX_API_KEY"),
     "X-RapidAPI-Host": "aerodatabox.p.rapidapi.com"
 }
-
+st.write(f"DEBUG key exists: {bool(os.getenv('AERODATABOX_API_KEY') or st.secrets.get('AERODATABOX_API_KEY', ''))}")
 
 with open('airport_bg.jpg', 'rb') as f:
     bg_image = base64.b64encode(f.read()).decode()
