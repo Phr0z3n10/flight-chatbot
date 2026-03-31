@@ -9,9 +9,19 @@ import requests
 from datetime import datetime, timedelta, timezone
 
 load_dotenv()
-client = anthropic.Anthropic(
-    api_key=os.getenv("ANTHROPIC_API_KEY") or st.secrets.get("ANTHROPIC_API_KEY", "")
-)
+def get_secret(key):
+    try:
+        return st.secrets[key]
+    except Exception:
+        return os.getenv(key)
+
+client = anthropic.Anthropic(api_key=get_secret("ANTHROPIC_API_KEY"))
+
+HEADERS = {
+    "X-RapidAPI-Key": get_secret("AERODATABOX_API_KEY"),
+    "X-RapidAPI-Host": "aerodatabox.p.rapidapi.com"
+}
+
 
 with open('airport_bg.jpg', 'rb') as f:
     bg_image = base64.b64encode(f.read()).decode()
@@ -35,11 +45,6 @@ You will handle rude or aggressive users with calmness, kindness and professiona
 When presenting airport arrival or departure lists, be concise. List only the most relevant flights in a clean simple format. Do not over-explain or second-guess the data.
 """
 
-HEADERS = {
-    "X-RapidAPI-Key": os.getenv("AERODATABOX_API_KEY") or st.secrets.get("AERODATABOX_API_KEY", ""),
-    "X-RapidAPI-Host": "aerodatabox.p.rapidapi.com"
-}
-st.write(f"DEBUG key exists: {bool(os.getenv('AERODATABOX_API_KEY') or st.secrets.get('AERODATABOX_API_KEY', ''))}")
 
 def safe_api_call(url):
     try:
