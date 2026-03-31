@@ -21,7 +21,7 @@ HEADERS = {
     "X-RapidAPI-Key": get_secret("AERODATABOX_API_KEY"),
     "X-RapidAPI-Host": "aerodatabox.p.rapidapi.com"
 }
-st.write(f"DEBUG key exists: {bool(os.getenv('AERODATABOX_API_KEY') or st.secrets.get('AERODATABOX_API_KEY', ''))}")
+
 
 with open('airport_bg.jpg', 'rb') as f:
     bg_image = base64.b64encode(f.read()).decode()
@@ -210,8 +210,8 @@ if user_question:
                 messages=st.session_state.messages
             )
         reply = response.content[0].text
-    except Exception as e:
-        reply = f"Error: {str(e)}"
+    except Exception:
+        reply = "I'm sorry, I'm having trouble reaching the flight service right now. Please try again in a moment."
 
     with st.chat_message("assistant"):
         st.markdown(reply)
