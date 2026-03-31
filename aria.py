@@ -210,8 +210,8 @@ if user_question:
                 messages=st.session_state.messages
             )
         reply = response.content[0].text
-    except Exception:
-        reply = "I'm sorry, I'm having trouble reaching the flight service right now. Please try again in a moment."
+    except Exception as e:
+        reply = f"Error: {str(e)}"
 
     with st.chat_message("assistant"):
         st.markdown(reply)
