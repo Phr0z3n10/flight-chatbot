@@ -39,6 +39,7 @@ HEADERS = {
     "X-RapidAPI-Key": os.getenv("AERODATABOX_API_KEY") or st.secrets.get("AERODATABOX_API_KEY", ""),
     "X-RapidAPI-Host": "aerodatabox.p.rapidapi.com"
 }
+st.write(f"DEBUG key exists: {bool(os.getenv('AERODATABOX_API_KEY') or st.secrets.get('AERODATABOX_API_KEY', ''))}")
 
 def safe_api_call(url):
     try:
